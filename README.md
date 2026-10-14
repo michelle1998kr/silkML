@@ -107,13 +107,30 @@ The destination is `michelle1998kr`. The visitor copies the proposal and opens `
 
 The primary handoff is a visual PNG proposal. Every item includes its original design thumbnail, silk, quantity, selected color swatch and code, inquiry price, and note. Unconfirmed colors show a neutral question mark and no invented color code. Measurements appear once. The page previews every image before download; customers save and attach all numbered pages in Instagram. Long notes continue onto numbered pages with the design and color repeated for context. Text copy is available as a secondary fallback. Before launch, test the handoff on real iOS and Android phones, including Instagram's in-app browser and logged-out behavior. Desktop browser verification cannot establish native-app behavior.
 
-## Low-cost hosting
+## Hosting
+
+### GitHub Pages
+
+The public site is deployed at **https://michelle1998kr.github.io/silkML/**, with Korean at `/silkML/ko/` and English at `/silkML/en/`.
+
+`.github/workflows/deploy.yml` runs the tests and production build, then deploys on each push to `main`. It can also be run manually from GitHub Actions. Repository Settings > Pages must use **GitHub Actions** as the source. The build reads the site's origin and base path from GitHub Pages, so page links, language switching, recovery links, public assets, and optimized images use the correct repository prefix.
+
+To build the GitHub version locally:
+
+```sh
+SITE_URL=https://michelle1998kr.github.io SITE_BASE=/silkML npm run build
+SITE_URL=https://michelle1998kr.github.io SITE_BASE=/silkML npm run preview
+```
+
+The regular Docker preview stays at **http://localhost:8080/ko/**. It defaults to the root path and does not need `SITE_BASE`. Saved choices are separate between localhost and the public site's origin. A recovery link from the public site can restore design/color selections in another browser.
+
+### Optional Cloudflare hosting
 
 This is an **Astro static build with small React islands** for interactive forms. No always-on server, database, API key, or paid commerce platform is needed. Docker is for local preview; Cloudflare can serve `dist/` directly.
 
-Cloudflare Workers Static Assets is the recommended first deployment target. [Cloudflare's current documentation](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/) lists static asset requests as free and unlimited, with no extra charge for asset storage. A custom domain and any future paid services are separate. Check current limits when deploying.
+Cloudflare Workers Static Assets is an alternative deployment target. [Cloudflare's current documentation](https://developers.cloudflare.com/workers/static-assets/billing-and-limitations/) lists static asset requests as free and unlimited, with no extra charge for asset storage. A custom domain and any future paid services are separate. Check current limits when deploying.
 
-`wrangler.jsonc` is prepared for an assets-only deployment. Nothing has been published or connected to an account. When ready to publish deliberately:
+`wrangler.jsonc` is prepared for an assets-only deployment. No Cloudflare deployment or account connection has been set up. When ready to publish deliberately:
 
 ```sh
 SITE_URL=https://your-real-domain.example npm run build
